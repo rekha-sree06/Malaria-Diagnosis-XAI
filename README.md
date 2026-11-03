@@ -127,14 +127,16 @@ Raw experimental outputs are excluded from Git.
 - No clinician or user study was conducted.
 - Heatmaps must not be interpreted as verified parasite localization.
 
-## Data and Model Files
+### Dataset Source
 
-The following are kept locally and excluded from Git:
+The dataset used in this project is **Cell Images for Detecting Malaria**, publicly available on Kaggle.
 
-- data/
-- saved_models/
+- **Source:** [Kaggle – Cell Images for Detecting Malaria](https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria)
+- **Uploader:** iarunava
+- **Total images:** 27,558
+- **Classes:** Parasitized and Uninfected
 
-These contain the dataset and trained model checkpoints.
+The dataset is not included in this repository and must be downloaded separately.
 
 ## Reproducibility Notes
 
