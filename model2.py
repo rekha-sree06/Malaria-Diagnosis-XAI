@@ -13,20 +13,10 @@ Dataset: In this study, we utilize the publicly available "Cell Images for Detec
 """
 
 ###############################################################################
-# CELL 1: MOUNT DRIVE & UNZIP DATASET
+# CELL 1: USE LOCAL DATASET
 ###############################################################################
-from google.colab import drive
-drive.mount('/content/drive')
-
-# Unzip the dataset; adjust the path if necessary.
-!unzip -q /content/drive/MyDrive/cell_images.zip -d /content/
-data_dir = '/content/cell_images'
-print("Dataset unzipped to:", data_dir)
-
-!pip install opencv-python
-!pip install tensorflow
-!pip install seaborn
-!pip install matplotlib
+data_dir = 'data/cell_images'
+print("Dataset directory:", data_dir)
 
 """##**IMPORT LIBRARIES & SET GLOBAL SEED FOR REPRODUCIBILITY**
 This cell sets up the essential environment for our experiments. It imports standard libraries for file handling (os, glob), randomization (random, numpy), visualization (matplotlib, seaborn), image processing (cv2), and deep learning (TensorFlow). It then sets a fixed seed (42) across Python’s random module, NumPy, and TensorFlow to ensure reproducibility of our experiments. The cell further imports key components from Keras needed for building and training our model—in this case, using InceptionResNetV2 as the base architecture—and callbacks like ReduceLROnPlateau for adaptive learning rate adjustments. It also brings in evaluation metrics from scikit-learn (such as classification report, confusion matrix, ROC and PR curves) and dimensionality reduction techniques (PCA and t‑SNE) for visualizing feature space.
@@ -63,7 +53,6 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 
 # Install XAI libraries (if not already installed)
-!pip install lime shap tf-explain -q
 
 from lime import lime_image
 from skimage.segmentation import mark_boundaries
@@ -97,8 +86,40 @@ for i, cls in enumerate(classes):
 total_samples = len(file_paths)
 print("Total PNG files:", total_samples)
 
-# Create a TensorFlow Dataset from file paths and labels.
-ds = tf.data.Dataset.from_tensor_slices((file_paths, labels))
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+# Stratified 70/15/15 split, using the fixed seed
+train_paths, temp_paths, train_labels, temp_labels = train_test_split(
+    file_paths,
+    labels,
+    test_size=0.30,
+    random_state=SEED,
+    stratify=labels
+)
+
+val_paths, test_paths, val_labels, test_labels = train_test_split(
+    temp_paths,
+    temp_labels,
+    test_size=0.50,
+    random_state=SEED,
+    stratify=temp_labels
+)
+
+total_samples = len(file_paths)
+train_count = len(train_paths)
+val_count = len(val_paths)
+test_count = len(test_paths)
+
+print("Total PNG files:", total_samples)
+print(
+    f"Training samples: {train_count}, "
+    f"Validation samples: {val_count}, "
+    f"Testing samples: {test_count}"
+)
+print("Training class counts:", np.bincount(train_labels))
+print("Validation class counts:", np.bincount(val_labels))
+print("Testing class counts:", np.bincount(test_labels))
 
 def load_and_preprocess(path, label):
     image = tf.io.read_file(path)
@@ -107,36 +128,32 @@ def load_and_preprocess(path, label):
     image = tf.cast(image, tf.float32) / 255.0
     return image, label
 
-ds = ds.map(load_and_preprocess, num_parallel_calls=tf.data.AUTOTUNE)
-# Shuffle entire dataset before splitting.
-ds = ds.shuffle(buffer_size=total_samples, seed=SEED)
-ds = ds.cache().prefetch(tf.data.AUTOTUNE)
+train_ds = tf.data.Dataset.from_tensor_slices(
+    (train_paths, train_labels)
+)
+val_ds = tf.data.Dataset.from_tensor_slices(
+    (val_paths, val_labels)
+)
+test_ds = tf.data.Dataset.from_tensor_slices(
+    (test_paths, test_labels)
+)
 
-"""##**SPLIT DATASET INTO TRAIN, VALIDATION & TEST SETS**
-In this cell, the complete dataset is divided into training, validation, and testing subsets based on predetermined ratios. Specifically, 70% of the 27,090 images (approximately 18,963 samples) are allocated for training, 15% (around 4,063 samples) for validation, and the remaining 15% (roughly 4,064 samples) for testing. These counts are printed to confirm the split. The training dataset is further processed by reshuffling (using a fixed seed for reproducibility), repeating indefinitely, and batching with a batch size of 32, ensuring a randomized and continuous stream of data during model training. The validation and test sets are simply batched without shuffling or repetition. Finally, the number of steps per epoch is calculated by dividing the training sample count by the batch size, yielding 592 steps per epoch, and similarly, the validation steps are computed as 126 steps per epoch. These output details help verify that the dataset is partitioned and prepared correctly for efficient training and evaluation.
-"""
-
-###############################################################################
-# CELL 4: SPLIT DATASET INTO TRAIN, VALIDATION & TEST SETS
-###############################################################################
-train_count = int(0.7 * total_samples)
-val_count   = int(0.15 * total_samples)
-test_count  = total_samples - train_count - val_count
-print(f"Training samples: {train_count}, Validation samples: {val_count}, Testing samples: {test_count}")
-
-train_ds = ds.take(train_count)
-remaining_ds = ds.skip(train_count)
-val_ds = remaining_ds.take(val_count)
-test_ds = remaining_ds.skip(val_count)
+train_ds = train_ds.map(load_and_preprocess, num_parallel_calls=1)
+val_ds = val_ds.map(load_and_preprocess, num_parallel_calls=1)
+test_ds = test_ds.map(load_and_preprocess, num_parallel_calls=1)
 
 BATCH_SIZE = 32
-# For training, shuffle again then repeat and batch.
-train_ds = train_ds.shuffle(train_count, seed=SEED).repeat().batch(BATCH_SIZE)
-val_ds   = val_ds.batch(BATCH_SIZE)
-test_ds  = test_ds.batch(BATCH_SIZE)
 
-steps_per_epoch = max(train_count // BATCH_SIZE, 1)
-validation_steps = max(val_count // BATCH_SIZE, 1)
+train_ds = train_ds.shuffle(
+    1024, seed=SEED, reshuffle_each_iteration=True
+).repeat().batch(BATCH_SIZE).prefetch(1)
+
+val_ds = val_ds.batch(BATCH_SIZE).prefetch(1)
+test_ds = test_ds.batch(BATCH_SIZE).prefetch(1)
+
+steps_per_epoch = (train_count + BATCH_SIZE - 1) // BATCH_SIZE
+validation_steps = (val_count + BATCH_SIZE - 1) // BATCH_SIZE
+
 print("Steps per epoch:", steps_per_epoch)
 print("Validation steps:", validation_steps)
 
@@ -300,7 +317,7 @@ history2 = model.fit(
 )
 
 # Save using the native Keras format:
-model.save('/content/drive/MyDrive/model2.keras')
+model.save('saved_models/model2.keras')
 
 """##**EVALUATION ON VALIDATION AND TEST SETS WITH CONFUSION MATRIX, ROC, PR CURVES, & BATCH ACCURACY**
 

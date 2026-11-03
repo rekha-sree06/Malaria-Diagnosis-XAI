@@ -1,0 +1,16 @@
+image_number,image_name,variant,predicted_class,ssim,spearman,status
+1,C68P29N_ThinF_IMG_20150819_133236_cell_144.png,original,parasitized,1.0,1.0,success
+1,C68P29N_ThinF_IMG_20150819_133236_cell_144.png,brightness_plus10,parasitized,0.9979631603265811,0.9997678817313432,success
+1,C68P29N_ThinF_IMG_20150819_133236_cell_144.png,contrast_plus10,parasitized,0.9940683128767348,0.9992933349663936,success
+6,C137P98ThinF_IMG_20151005_163335_cell_3.png,original,parasitized,1.0,1.0,success
+6,C137P98ThinF_IMG_20151005_163335_cell_3.png,brightness_plus10,parasitized,0.9870602676359433,0.9712132645485858,success
+6,C137P98ThinF_IMG_20151005_163335_cell_3.png,contrast_plus10,parasitized,0.9980965763062061,0.9851134410402316,success
+11,C62P23N_ThinF_IMG_20150818_133307_cell_150.png,original,uninfected,1.0,1.0,success
+11,C62P23N_ThinF_IMG_20150818_133307_cell_150.png,brightness_plus10,uninfected,0.9926862561743365,0.9989852730035116,success
+11,C62P23N_ThinF_IMG_20150818_133307_cell_150.png,contrast_plus10,uninfected,0.9848708384740474,0.9987452075612314,success
+16,C208ThinF_IMG_20151029_160108_cell_187.png,original,uninfected,1.0,1.0,success
+16,C208ThinF_IMG_20151029_160108_cell_187.png,brightness_plus10,uninfected,0.9947791060191514,0.9981219829424338,success
+16,C208ThinF_IMG_20151029_160108_cell_187.png,contrast_plus10,uninfected,0.9956649065985943,0.9988167747226913,success
+20,C150P111ThinF_IMG_20151115_115805_cell_56.png,original,uninfected,1.0,1.0,success
+20,C150P111ThinF_IMG_20151115_115805_cell_56.png,brightness_plus10,uninfected,0.9972156587511228,0.9988006986678514,success
+20,C150P111ThinF_IMG_20151115_115805_cell_56.png,contrast_plus10,uninfected,0.9981489659732825,0.9996193962066616,success

@@ -7,23 +7,13 @@ Original file is located at
     https://colab.research.google.com/drive/1GtqwC1Wn32eQadkAXHEJwWrrE3BYi1wF
 
 ##**Xception**
-The initial data preparation mounts the user's Google Drive and unzips the "Images for Detecting Malaria" dataset, available on Kaggle (https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria). The dataset comprises over 27,000 high-resolution microscopic images categorized into two groups: parasitized and uninfected. Once extracted, the data is stored in a designated directory, enabling subsequent processing and deep learning experiments focused on malaria detection.
+The dataset is expected to be available locally under the data directory. The "Images for Detecting Malaria" dataset is publicly available on Kaggle (https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria). The dataset comprises over 27,000 high-resolution microscopic images categorized into two groups: parasitized and uninfected. Once extracted, the data is stored in a designated directory, enabling subsequent processing and deep learning experiments focused on malaria detection.
 """
 
-# CELL 1: MOUNT DRIVE & UNZIP DATASET
+# CELL 1: USE LOCAL DATASET
 ###############################################################################
-from google.colab import drive
-drive.mount('/content/drive')
-
-# Unzip the dataset; adjust the path if necessary.
-!unzip -q /content/drive/MyDrive/cell_images.zip -d /content/
-data_dir = '/content/cell_images'
-print("Dataset unzipped to:", data_dir)
-
-!pip install opencv-python
-!pip install tensorflow
-!pip install seaborn
-!pip install matplotlib
+data_dir = 'data/cell_images'
+print("Dataset directory:", data_dir)
 
 """##**IMPORT LIBRARIES & SET GLOBAL SEED FOR REPRODUCIBILITY**
 
@@ -56,7 +46,6 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 
 # Install XAI libraries (if not already installed)
-!pip install lime shap tf-explain -q
 
 from lime import lime_image
 from skimage.segmentation import mark_boundaries
@@ -87,11 +76,28 @@ for i, cls in enumerate(classes):
     file_paths.extend(paths)
     labels.extend([i] * len(paths))
 
+
 total_samples = len(file_paths)
 print("Total PNG files:", total_samples)
 
-# Create a TensorFlow Dataset from file paths and labels.
-ds = tf.data.Dataset.from_tensor_slices((file_paths, labels))
+# Shuffle paths and labels together before splitting.
+combined = list(zip(file_paths, labels))
+random.Random(SEED).shuffle(combined)
+file_paths, labels = zip(*combined)
+file_paths = list(file_paths)
+labels = list(labels)
+
+train_count = int(0.70 * total_samples)
+val_count = int(0.15 * total_samples)
+test_count = total_samples - train_count - val_count
+
+print(
+    f"Training samples: {train_count}, "
+    f"Validation samples: {val_count}, "
+    f"Testing samples: {test_count}"
+)
+
+BATCH_SIZE = 32
 
 def load_and_preprocess(path, label):
     image = tf.io.read_file(path)
@@ -100,39 +106,36 @@ def load_and_preprocess(path, label):
     image = tf.cast(image, tf.float32) / 255.0
     return image, label
 
-ds = ds.map(load_and_preprocess, num_parallel_calls=tf.data.AUTOTUNE)
-# Shuffle entire dataset before splitting.
-ds = ds.shuffle(buffer_size=total_samples, seed=SEED)
-ds = ds.cache().prefetch(tf.data.AUTOTUNE)
+def make_dataset(paths, targets, training=False):
+    ds = tf.data.Dataset.from_tensor_slices((paths, targets))
+    ds = ds.map(load_and_preprocess, num_parallel_calls=1)
 
-"""##**SPLIT DATASET INTO TRAIN, VALIDATION & TEST SETS**
+    if training:
+        ds = ds.shuffle(1024, seed=SEED)
+        ds = ds.repeat()
 
- The dataset is split into three subsets—training, validation, and testing—to ensure unbiased model training and robust evaluation. Out of the total 27,090 samples, 70% (18,963 images) are allocated for training, while 15% (4,063 images) are reserved for validation and the remaining 15% (4,064 images) are set aside for testing, as confirmed by the printed output. Initially, the training set is extracted from the complete dataset using TensorFlow’s `take()` method, and the remaining samples are partitioned into validation and test sets using the `skip()` method. For the training process, the dataset is reshuffled using a buffer size equal to the training sample count and a fixed seed (42) to maintain reproducibility. The training data is then repeated indefinitely (to support multiple epochs) and batched with a batch size of 32. In contrast, the validation and test sets are simply batched with the same size without reshuffling or repetition. Finally, the number of training steps per epoch is calculated to be 592, and the number of validation steps is computed as 126, ensuring that every sample in the training and validation sets is processed during each epoch.
-"""
+    return ds.batch(BATCH_SIZE).prefetch(1)
 
-###############################################################################
-# CELL 4: SPLIT DATASET INTO TRAIN, VALIDATION & TEST SETS
-###############################################################################
-train_count = int(0.7 * total_samples)
-val_count   = int(0.15 * total_samples)
-test_count  = total_samples - train_count - val_count
-print(f"Training samples: {train_count}, Validation samples: {val_count}, Testing samples: {test_count}")
+train_paths = file_paths[:train_count]
+train_labels = labels[:train_count]
 
-train_ds = ds.take(train_count)
-remaining_ds = ds.skip(train_count)
-val_ds = remaining_ds.take(val_count)
-test_ds = remaining_ds.skip(val_count)
+val_paths = file_paths[train_count:train_count + val_count]
+val_labels = labels[train_count:train_count + val_count]
 
-BATCH_SIZE = 32
-# For training, shuffle again then repeat and batch.
-train_ds = train_ds.shuffle(train_count, seed=SEED).repeat().batch(BATCH_SIZE)
-val_ds   = val_ds.batch(BATCH_SIZE)
-test_ds  = test_ds.batch(BATCH_SIZE)
+test_paths = file_paths[train_count + val_count:]
+test_labels = labels[train_count + val_count:]
 
-steps_per_epoch = max(train_count // BATCH_SIZE, 1)
-validation_steps = max(val_count // BATCH_SIZE, 1)
+train_ds = make_dataset(train_paths, train_labels, training=True)
+val_ds = make_dataset(val_paths, val_labels)
+test_ds = make_dataset(test_paths, test_labels)
+
+steps_per_epoch = (train_count + BATCH_SIZE - 1) // BATCH_SIZE
+validation_steps = (val_count + BATCH_SIZE - 1) // BATCH_SIZE
+
 print("Steps per epoch:", steps_per_epoch)
 print("Validation steps:", validation_steps)
+
+
 
 """##**EXPLORATORY DATA ANALYSIS (DISPLAY SAMPLE IMAGES & CLASS COUNTS**
 This step explores the dataset by iterating over each class directory and displaying sample images along with their class counts. For each class—such as “Parasitized” and “Uninfected”—the code lists all images in the corresponding directory and prints the number of images found. Then, it selects the first three images from each class, reads them using OpenCV, converts them from BGR to RGB format, and displays them side by side in a 1×3 grid. A title is added above each grid to indicate the class being shown. This exploratory analysis helps verify the integrity of the dataset by confirming both the class distribution and the visual quality of the images before further processing.
@@ -175,7 +178,7 @@ def augment(image, label):
     return data_augmentation(image), label
 
 # Apply augmentation to training dataset.
-train_ds = train_ds.map(augment, num_parallel_calls=tf.data.AUTOTUNE)
+train_ds = train_ds.map(augment, num_parallel_calls=1)
 
 """##**BUILD THE XCEPTION-BASED MODEL**
 The model is built using the Xception architecture as the base, pre-trained on ImageNet, with the top (fully connected) layers removed to serve purely as a feature extractor. The input shape is set to (224, 224, 3) to match the preprocessed image dimensions. All layers of the Xception base are initially frozen to preserve their learned representations during the early training phase. On top of the base, the network is extended with a GlobalAveragePooling2D layer that condenses the spatial dimensions of the feature maps, followed by a Dense layer with 1,024 units and ReLU activation for learning high-level representations. A Dropout layer with a dropout rate of 0.5 is added to mitigate overfitting, and finally, a Dense output layer with a single neuron and sigmoid activation produces a binary classification output. In total, the model comprises approximately 22.96 million parameters, of which about 2.10 million are trainable and 20.86 million remain frozen. This configuration leverages the powerful feature extraction capabilities of Xception while limiting training to a smaller set of newly added layers for fine-tuning on the malaria dataset.
@@ -242,7 +245,20 @@ test_eval_cb = TestEvaluationCallback(test_ds)
 
 # Use only ReduceLROnPlateau and the custom print callbacks (no early stopping).
 reduce_lr  = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=2, min_lr=1e-7)
+os.makedirs("saved_models", exist_ok=True)
+checkpoint_stage1 = tf.keras.callbacks.ModelCheckpoint(
+    'saved_models/model1_stage1_best.keras',
+    monitor='val_loss',
+    save_best_only=True,
+    verbose=1
+)
 
+checkpoint_stage2 = tf.keras.callbacks.ModelCheckpoint(
+    'saved_models/model1_stage2_best.keras',
+    monitor='val_loss',
+    save_best_only=True,
+    verbose=1
+)
 """##**Step 1 Training**
 In Step 1, the model is compiled with the Adam optimizer using an initial learning rate of 1e-3, binary crossentropy as the loss function, and accuracy as the performance metric. The model is then trained for 20 epochs on the training dataset (with 592 steps per epoch) while validating on a separate set (126 steps per epoch). Custom callbacks are used to print epoch metrics and to evaluate the test dataset at the end of each epoch. The training logs show that during the first epoch the model achieved a training loss of approximately 0.1857 and a training accuracy of 92.85%, with the validation loss and accuracy at 0.1530 and 94.39%, respectively, and test metrics showing a loss of 0.1616 and an accuracy of 93.92%. As training progresses over the epochs, the training loss steadily decreases and the accuracy improves, reaching around 96.45% training accuracy with a loss of 0.0978 by epoch 20. Notably, around epoch 7 the learning rate is automatically reduced from 1e-3 to 1e-4 by the ReduceLROnPlateau callback, and later further adjustments bring it down to 1e-5 and even 1e-6, allowing more precise fine-tuning. The validation and test accuracies consistently remain high, stabilizing near 95.88% and 96.41%, respectively. These results demonstrate effective initial training of the newly added top layers, ensuring that the model can extract meaningful features from the input data before further fine-tuning the base layers.
 """
@@ -260,7 +276,7 @@ history1 = model.fit(
     epochs=EPOCHS_STEP1,
     validation_data=val_ds,
     validation_steps=validation_steps,
-    callbacks=[reduce_lr, print_metrics_cb, test_eval_cb],
+    callbacks=[reduce_lr, print_metrics_cb, test_eval_cb, checkpoint_stage1],
     verbose=1
 )
 
@@ -274,6 +290,13 @@ During the first epoch of fine-tuning, the model achieves a training loss of app
 for layer in base_model.layers[-20:]:
     layer.trainable = True
 
+reduce_lr_stage2 = ReduceLROnPlateau(
+    monitor='val_loss',
+    factor=0.1,
+    patience=2,
+    min_lr=1e-7
+)
+
 model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
     loss='binary_crossentropy',
@@ -286,15 +309,15 @@ history2 = model.fit(
     epochs=EPOCHS_STEP2,
     validation_data=val_ds,
     validation_steps=validation_steps,
-    callbacks=[reduce_lr, print_metrics_cb, test_eval_cb],
+    callbacks=[reduce_lr_stage2, print_metrics_cb, test_eval_cb, checkpoint_stage2],
     verbose=1
 )
 
 # In Colab Session 1, after training your model (named, say, `model`):
-model.save('/content/drive/MyDrive/model1.h5')
+model.save('saved_models/model1.h5')
 
 # Save using the native Keras format:
-model.save('/content/drive/MyDrive/model1.keras')
+model.save('saved_models/model1.keras')
 
 """##**EVALUATION ON VALIDATION AND TEST SETS WITH CONFUSION MATRIX, ROC, PR CURVES, & BATCH ACCURACY**
 The evaluation procedure is implemented as a function that comprehensively assesses model performance on both validation and test datasets using multiple metrics and visualizations. First, it calculates the number of batches in the given dataset and then generates predictions by running the model over all batches. These predictions are thresholded at 0.5 to derive binary labels, which are then compared with the ground truth labels to print a detailed classification report that includes precision, recall, and F1-score for each class. A confusion matrix is generated and visualized using a seaborn heatmap, clearly indicating the number of correct and incorrect predictions. Next, the function computes the Receiver Operating Characteristic (ROC) curve and its Area Under the Curve (AUC) to illustrate the trade-off between true positive and false positive rates. In addition, a Precision-Recall curve is plotted with its AUC to show how well the model maintains high precision over a range of recall values. Finally, the function calculates the accuracy for each batch, and these values are displayed in a box plot, highlighting the consistency of performance across batches. This multi-faceted evaluation provides a thorough understanding of the model’s strengths and potential areas for improvement.
@@ -644,36 +667,70 @@ sample_image = img_array_sample  # shape: (1, 224, 224, 3)
 sample_image_flat = sample_image.reshape(1, -1)
 
 # Compute SHAP values for the local sample. Adjust nsamples as needed.
-shap_values_local_flat = explainer_shap.shap_values(sample_image_flat, nsamples=100)
+shap_values_local_flat = explainer_shap.shap_values(
+    sample_image_flat, nsamples=100
+)
+shap_values_local_array = np.asarray(shap_values_local_flat)
 # Reshape each array of SHAP values back to (224, 224, 3).
-shap_values_local = [sv.reshape(IMG_HEIGHT, IMG_WIDTH, 3) for sv in shap_values_local_flat]
+if shap_values_local_array.ndim == 3:
+    shap_values_local_array = shap_values_local_array[:, :, 0]
 
-plt.title("SHAP Local Explanation for Xception (KernelExplainer)", fontsize=16, color='darkgreen')
+shap_values_local = [
+    shap_values_local_array[0].reshape(IMG_HEIGHT, IMG_WIDTH, 3)
+]
+
+plt.title("SHAP Explanation - Local")
 # Remove the batch dimension by passing sample_image[0] for plotting.
-shap.image_plot(shap_values_local, sample_image[0])
+shap.image_plot(shap_values_local, sample_image)
 
 # ---- Global Explanation ----
 # Get a batch of images from the validation dataset.
-global_batch = next(iter(val_ds))[0].numpy()  # shape: (batch_size, 224, 224, 3)
+global_batch = next(iter(val_ds))[0].numpy()
 batch_size = global_batch.shape[0]
-# Flatten the batch images.
+
 global_batch_flat = global_batch.reshape(batch_size, -1)
 
-# Since KernelExplainer may not process a batch as expected, we compute SHAP values one by one:
 shap_values_global_list = []
+
+# Compute SHAP values one image at a time.
 for i in range(batch_size):
-    instance_flat = global_batch_flat[i:i+1]  # shape: (1, 224*224*3)
-    # Compute SHAP values for this single instance.
-    shap_val = explainer_shap.shap_values(instance_flat, nsamples=100)
-    # shap_val is a list; for binary classification it should have one element with shape (1, 224*224*3)
-    # Extract the explanation for this instance.
-    shap_values_global_list.append(shap_val[0][0])
+    instance_flat = global_batch_flat[i:i + 1]
 
-# Stack the per-instance explanations into an array of shape (batch_size, 224*224*3)
-shap_values_global_array = np.stack(shap_values_global_list, axis=0)
-# Reshape back to (batch_size, 224, 224, 3)
-shap_values_global = [shap_values_global_array.reshape(batch_size, IMG_HEIGHT, IMG_WIDTH, 3)]
+    shap_val = explainer_shap.shap_values(
+        instance_flat, nsamples=100
+    )
 
-plt.title("SHAP Global Explanation for Xception (KernelExplainer)", fontsize=16, color='purple')
-# For multiple images, shap.image_plot expects a list (one element per output); here we have one output.
+    # SHAP 0.51.0: (1, features, outputs)
+    shap_val = np.asarray(shap_val)
+
+    if shap_val.ndim == 3:
+        shap_val = shap_val[:, :, 0]
+
+    # Extract all feature values for this image.
+    instance_shap = shap_val[0]
+
+    shap_values_global_list.append(instance_shap)
+
+# Combine explanations: (batch_size, 150528)
+shap_values_global_array = np.stack(
+    shap_values_global_list, axis=0
+)
+
+print("batch_size:", batch_size)
+print("SHAP global array shape:", shap_values_global_array.shape)
+print("SHAP global array size:", shap_values_global_array.size)
+
+# Restore image dimensions: (batch_size, 224, 224, 3)
+shap_values_global = [
+    shap_values_global_array.reshape(
+        batch_size, IMG_HEIGHT, IMG_WIDTH, 3
+    )
+]
+
+plt.title(
+    "SHAP Global Explanation for Xception (KernelExplainer)",
+    fontsize=16,
+    color="purple"
+)
+
 shap.image_plot(shap_values_global, global_batch)

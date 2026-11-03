@@ -1,0 +1,26 @@
+# Datasets and model checkpoints
+/data/
+/saved_models/
+
+# Old experimental results
+/results/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+.env
+
+# IDE and system files
+.vscode/
+.idea/
+.DS_Store
+
+# Temporary root visualisations
+/*.png
+
+# Raw experimental outputs (curated results are in phase2_deliverables/)
+/results_validated/

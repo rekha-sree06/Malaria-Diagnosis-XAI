@@ -1,0 +1,181 @@
+image_name,true_class,predicted_class,predicted_class_probability,gradcam_status,gradcam_included,lime_r2,lime_positive_area_fraction,lime_negative_area_fraction,shap_sum,shap_additivity_residual,shap_status,explanation
+C68P29N_ThinF_IMG_20150819_133236_cell_144.png,Parasitized,Parasitized,0.999993752042883,valid_previous_run,True,0.7244778639043827,0.070930325255102,0.0515186543367346,-0.4858577070969636,-0.0109671449459193,success_ns200,"The model predicted Parasitized with a probability of 99.9994% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.724. Positive-contribution superpixels cover 7.1% of the image, while negative-contribution superpixels cover 5.2%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.4859, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0110. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C124P85ThinF_IMG_20151002_155026_cell_172.png,Parasitized,Parasitized,0.9995489450229798,valid_previous_run,True,0.7428318581259679,0.095165019132653,0.0436065051020408,-0.5612428660350656,0.0645630593898044,success,"The model predicted Parasitized with a probability of 99.9549% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.743. Positive-contribution superpixels cover 9.5% of the image, while negative-contribution superpixels cover 4.4%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.5612, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0646. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C103P64ThinF_IMG_20150918_164250_cell_173.png,Parasitized,Parasitized,0.9963978317100556,valid_previous_run,True,0.6285428524349759,0.0934909119897959,0.0770487882653061,-0.4209862339234624,-0.0718591244035687,success,"The model predicted Parasitized with a probability of 99.6398% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.629. Positive-contribution superpixels cover 9.3% of the image, while negative-contribution superpixels cover 7.7%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.4210, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0719. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C84P45ThinF_IMG_20150818_101226_cell_93.png,Parasitized,Parasitized,0.9999988773138284,valid_previous_run,True,0.8292394291592291,0.0959223533163265,0.0594706632653061,-0.6242270274458154,0.1274031877148648,success,"The model predicted Parasitized with a probability of 99.9999% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.829. Positive-contribution superpixels cover 9.6% of the image, while negative-contribution superpixels cover 5.9%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.6242, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.1274. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C149P110ThinF_IMG_20151115_115154_cell_258.png,Parasitized,Parasitized,0.9999843194691492,valid_previous_run,True,0.5569655084975735,0.0620814732142857,0.1602758290816326,-0.412959672997722,-0.0838338542602559,success,"The model predicted Parasitized with a probability of 99.9984% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.557. Positive-contribution superpixels cover 6.2% of the image, while negative-contribution superpixels cover 16.0%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.4130, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0838. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C137P98ThinF_IMG_20151005_163335_cell_3.png,Parasitized,Parasitized,0.9084495902061462,valid_previous_run,True,0.4076999708921428,0.0828085140306122,0.0714285714285714,-0.3764856879379578,-0.0007048945162467,success,"The model predicted Parasitized with a probability of 90.8450% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.408. Positive-contribution superpixels cover 8.3% of the image, while negative-contribution superpixels cover 7.1%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.3765, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0007. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C136P97ThinF_IMG_20151005_143329_cell_95.png,Parasitized,Parasitized,0.9977003503590822,valid_previous_run,True,0.7213220543075962,0.087711256377551,0.0376674107142857,-0.5100078620750934,0.0174228857074409,success,"The model predicted Parasitized with a probability of 99.7700% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.721. Positive-contribution superpixels cover 8.8% of the image, while negative-contribution superpixels cover 3.8%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.5100, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0174. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C129P90ThinF_IMG_20151004_134636_cell_20.png,Parasitized,Parasitized,0.9999222292972264,valid_previous_run,True,0.9152377111977416,0.1436144770408163,0.0691167091836734,-0.4696651261533295,-0.0270000474934315,success,"The model predicted Parasitized with a probability of 99.9922% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.915. Positive-contribution superpixels cover 14.4% of the image, while negative-contribution superpixels cover 6.9%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.4697, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0270. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C82P43ThinF_IMG_20150817_125114_cell_19.png,Parasitized,Parasitized,0.9999585480763926,valid_previous_run,True,0.5370171025457731,0.109634088010204,0.0869339923469387,-0.3743763039191207,-0.1224024268568656,success,"The model predicted Parasitized with a probability of 99.9959% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.537. Positive-contribution superpixels cover 11.0% of the image, while negative-contribution superpixels cover 8.7%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.3744, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.1224. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C120P81ThinF_IMG_20151002_130715_cell_192.png,Parasitized,Parasitized,0.9997316875960678,valid_previous_run,True,0.5571350328141571,0.1254982461734693,0.0609255420918367,-0.4734117100032309,-0.0228117041971271,success,"The model predicted Parasitized with a probability of 99.9732% for that class.
+
+Grad-CAM: A Grad-CAM map from a previous run is available for the predicted class. It indicates image regions that influenced the model's prediction, but was not independently regenerated in the consolidated batch. It does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.557. Positive-contribution superpixels cover 12.5% of the image, while negative-contribution superpixels cover 6.1%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is -0.4734, indicating a net direction toward the Parasitized output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0228. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images. Grad-CAM provenance includes maps retained from a previous run."
+C62P23N_ThinF_IMG_20150818_133307_cell_150.png,Uninfected,Uninfected,0.9944856762886048,valid,True,0.3336902936363177,0.0811344068877551,0.0393415178571428,0.4781982561025626,0.0161381105508797,success,"The model predicted Uninfected with a probability of 99.4486% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.334. Positive-contribution superpixels cover 8.1% of the image, while negative-contribution superpixels cover 3.9%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.4782, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0161. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C76P37ThinF_IMG_20150815_173019_cell_141.png,Uninfected,Uninfected,0.9995725750923156,valid,True,0.2862732193076478,0.0788225446428571,0.0671037946428571,0.5383087220604003,-0.0354157510215819,success,"The model predicted Uninfected with a probability of 99.9573% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.286. Positive-contribution superpixels cover 7.9% of the image, while negative-contribution superpixels cover 6.7%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.5383, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.0354. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C238NThinF_IMG_20151207_114605_cell_18.png,Uninfected,Uninfected,0.9153058528900146,valid,True,0.2998771686569988,0.050243144132653,0.0658282844387755,0.2616124706083341,0.1295126123613314,success,"The model predicted Uninfected with a probability of 91.5306% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.300. Positive-contribution superpixels cover 5.0% of the image, while negative-contribution superpixels cover 6.6%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.2616, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.1295. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C120P81ThinF_IMG_20151002_131120_cell_130.png,Uninfected,Uninfected,0.9963525533676147,valid,True,0.3430148321619957,0.1142179528061224,0.0734016262755102,0.42266870998867,0.0752310011433795,success,"The model predicted Uninfected with a probability of 99.6353% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.343. Positive-contribution superpixels cover 11.4% of the image, while negative-contribution superpixels cover 7.3%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.4227, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0752. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C45P6ThinF_IMG_20151130_154725_cell_86.png,Uninfected,Uninfected,0.949593424797058,valid,True,0.2866637093342425,0.0687181122448979,0.0757932079081632,0.3836907124830953,0.0562864565537699,success,"The model predicted Uninfected with a probability of 94.9593% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.287. Positive-contribution superpixels cover 6.9% of the image, while negative-contribution superpixels cover 7.6%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.3837, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0563. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C208ThinF_IMG_20151029_160108_cell_187.png,Uninfected,Uninfected,0.9984943866729736,valid,True,0.294534150410086,0.0761320153061224,0.0542490433673469,0.6341266685983155,-0.1319214159509155,success,"The model predicted Uninfected with a probability of 99.8494% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.295. Positive-contribution superpixels cover 7.6% of the image, while negative-contribution superpixels cover 5.4%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.6341, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.1319. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C107P68ThinF_IMG_20150924_222415_cell_23.png,Uninfected,Uninfected,0.9983168244361876,valid,True,0.2377641244856899,0.067024075255102,0.0394610969387755,0.4994087046885391,0.0027944021916488,success,"The model predicted Uninfected with a probability of 99.8317% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.238. Positive-contribution superpixels cover 6.7% of the image, while negative-contribution superpixels cover 3.9%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.4994, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0028. The residual is within the provisional 0.05 reporting threshold. This does not establish exact additivity, biological correctness, or clinical validity. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C107P68ThinF_IMG_20150924_221632_cell_45.png,Uninfected,Uninfected,0.9856197834014891,valid,True,0.3177228865222392,0.0702726403061224,0.0624202806122448,0.6186184560824737,-0.1283250128795012,success,"The model predicted Uninfected with a probability of 98.5620% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.318. Positive-contribution superpixels cover 7.0% of the image, while negative-contribution superpixels cover 6.2%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.6186, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is -0.1283. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C122P83ThinF_IMG_20151002_145014_cell_33.png,Uninfected,Uninfected,0.997610330581665,valid,True,0.2134293633613732,0.0518375318877551,0.0422712053571428,0.3114031684136743,0.1901785600447302,success,"The model predicted Uninfected with a probability of 99.7610% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.213. Positive-contribution superpixels cover 5.2% of the image, while negative-contribution superpixels cover 4.2%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.3114, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.1902. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."
+C150P111ThinF_IMG_20151115_115805_cell_56.png,Uninfected,Uninfected,0.9999361038208008,valid,True,0.3593003362083271,0.066665338010204,0.1209542410714285,0.4391028560318791,0.0640426598868526,success,"The model predicted Uninfected with a probability of 99.9936% for that class.
+
+Grad-CAM: A Grad-CAM map was generated successfully for the predicted class. It indicates image regions that influenced the model's prediction; it does not establish parasite location.
+
+LIME: LIME produced a local surrogate R² of 0.359. Positive-contribution superpixels cover 6.7% of the image, while negative-contribution superpixels cover 12.1%. The R² describes local surrogate fit, not biological correctness.
+
+SHAP: The sum of SHAP attributions across the image is +0.4391, indicating a net direction toward the Uninfected output for the model output P(Uninfected). This aggregate does not describe individual pixel contributions. The additivity residual is +0.0640. The absolute additivity residual exceeds the provisional 0.05 reporting threshold. Therefore, the aggregate SHAP direction is provisional and must not be treated as confirmed directional evidence for the model output. The 0.05 threshold is a project-specific reporting heuristic, not a universally validated cutoff.
+
+Limitations: Visual attribution does not prove parasite presence or localization. No independent expert localization masks were available. LIME R² measures surrogate fit, not biological correctness. The pilot contains only 20 exploratory images."

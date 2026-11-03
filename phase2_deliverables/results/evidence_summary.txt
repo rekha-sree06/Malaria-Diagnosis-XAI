@@ -1,0 +1,7 @@
+Images processed: 20
+Grad-CAM included: 20
+Grad-CAM excluded: 0
+SHAP successful: 20
+Mean LIME R²: 0.4796
+Localization verified: No
+Independent expert masks available: No
